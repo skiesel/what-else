@@ -1,0 +1,58 @@
+{ "Recipes" :
+	{
+		"Old Ale" : {
+			"IngredientList" : {
+				"Marris Otter" : 	{ "Pounds" : 3.0, 	"Ounces" : 0.2 },
+				"Crystal 75" :  	{ "Pounds" : 0.0, 	"Ounces" : 2.2 },
+				"Special B" :  		{ "Pounds" : 0.0, 	"Ounces" : 1.1 },
+				"Black Patent" :  	{ "Pounds" : 0.0, 	"Ounces" : 0.4 },
+				"Brown" :  			{ "Pounds" : 0.0, 	"Ounces" : 0.4 },
+				"Northern Brewer" : { "Pounds" : 0.0, 	"Ounces" : 0.69 }
+			}
+		},
+		"Wee Heavy" : {
+			"IngredientList" : {
+				"2 Row" : 			{ "Pounds" : 3.0, 	"Ounces" : 0.3 },
+				"Special B" :  		{ "Pounds" : 0.0, 	"Ounces" : 0.8 },
+				"Black Patent" :  	{ "Pounds" : 0.0, 	"Ounces" : 0.4 },
+				"Crystal 75" :  	{ "Pounds" : 0.0, 	"Ounces" : 3.0 },
+				"Abbey" :  			{ "Pounds" : 0.0, 	"Ounces" : 1.5 },
+				"Northern Brewer" : { "Pounds" : 0.0, 	"Ounces" : 0.14 }
+			}
+		},
+		"Stone Chocolate Stout" : {
+			"IngredientList" : {
+				"2 Row" : 			{ "Pounds" : 3.0, 	"Ounces" : 0.3 },
+				"Black Patent" :  	{ "Pounds" : 0.0, 	"Ounces" : 3.0 },
+				"Oats" :  			{ "Pounds" : 0.0, 	"Ounces" : 6.4 },
+				"Chocolate" :  		{ "Pounds" : 0.0, 	"Ounces" : 4.6 },
+				"Cystal 10" :  		{ "Pounds" : 0.0, 	"Ounces" : 3.2 },
+				"Roasted Barley" : 	{ "Pounds" : 0.0, 	"Ounces" : 3.0 },
+				"Carapils" : 		{ "Pounds" : 0.0, 	"Ounces" : 1.6 },
+				"Cacao Nibs" : 		{ "Pounds" : 0.0, 	"Ounces" : 0.8 },
+				"Willamette" : 		{ "Pounds" : 0.0, 	"Ounces" : 0.52 }
+			}
+		},
+		"Oud Bruin" : {
+			"IngredientList" : {
+				"Pilsner" : 		{ "Pounds" : 2.0, 	"Ounces" : 10.4 },
+				"Special B" : 	 	{ "Pounds" : 0.0, 	"Ounces" : 2.7 },
+				"Brown" :  			{ "Pounds" : 0.0, 	"Ounces" : 2.7 },
+				"Tradition" : 		{ "Pounds" : 0.0, 	"Ounces" : 0.52 }
+			}
+		},
+		"Quad" : {
+			"IngredientList" : {
+				"Pilsner" : 		{ "Pounds" : 2.0, 	"Ounces" : 2.3 },
+				"Special B" :	  	{ "Pounds" : 0.0, 	"Ounces" : 3.1 },
+				"Abbey" :  			{ "Pounds" : 0.0, 	"Ounces" : 3.1 },
+				"Munich" :  		{ "Pounds" : 0.0, 	"Ounces" : 5.7 },
+				"Caramunich" :  	{ "Pounds" : 0.0, 	"Ounces" : 3.1 },
+				"Melanoiden" :  	{ "Pounds" : 0.0, 	"Ounces" : 3.1 },
+				"Wheat" :  			{ "Pounds" : 0.0, 	"Ounces" : 1.4 },
+				"Beet Sugar" :  	{ "Pounds" : 0.0, 	"Ounces" : 3.2 },
+				"Hallertau" : 		{ "Pounds" : 0.0, 	"Ounces" : 0.52 }
+			}
+		}
+	}
+}

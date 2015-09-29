@@ -1,0 +1,13 @@
+{
+	"PurchaseList" : {
+		"Marris Otter" : 	{ "Pounds" : 5.0, 	"Ounces" : 0.0 },
+		"Crystal 75" :  	{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Special B" :  		{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Black Patent" :  	{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Brown" :  			{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Northern Brewer" : { "Pounds" : 0.0, 	"Ounces" : 1.0 }
+	},
+	"RecipeList" : [
+		"Old Ale"
+	]
+}
