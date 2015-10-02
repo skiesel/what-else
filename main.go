@@ -29,6 +29,7 @@ type Purchase struct {
 var (
 	recipeFile = flag.String("RecipeFile", "recipes.json", "The recipe file index")
 	purchaseFile = flag.String("PurchaseFile", "purchase.json", "The purchase file")
+	zero = Quantity{Pounds:0, Ounces: 0}
 )
 
 func main() {
@@ -66,6 +67,27 @@ func main() {
 
 		leftOvers = minus(leftOvers, recipe.IngredientList)
 	}
+
+
+	fmt.Print("Already making: ")
+	for _, r := range purchase.RecipeList {
+		fmt.Print(r + ", ")
+	}
+	fmt.Println("\n")
+
+	removeThese := []string{}
+	for ingredient, quantity := range leftOvers {
+		if quantity.less(zero) {
+			fmt.Printf("Not enough %s for planned recipes (missing %glbs %goz)\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
+			removeThese = append(removeThese, ingredient)
+		}
+	}
+	fmt.Println()
+
+	for _, remove := range removeThese {
+		leftOvers[remove] = zero
+	}
+
 
 	extraRecipes := map[string]map[string]Quantity{}
 	recipes := map[string]string{}
@@ -115,12 +137,6 @@ func main() {
 
 	}
 
-	fmt.Print("Already making: ")
-	for _, r := range purchase.RecipeList {
-		fmt.Print(r + ", ")
-	}
-	fmt.Println("\n")
-
 	fmt.Println("Could make (smallest additional weight): " + recipes["smallestQuantiyRecipe"])
 	printNeeds(extraRecipes[recipes["smallestQuantiyRecipe"]])
 
@@ -135,13 +151,16 @@ func main() {
 }
 
 func printNeeds(list map[string]Quantity) {
-	var zero Quantity
 	fmt.Println("Need more:")
 	for ingredient, quantity := range list {
 		if quantity.less(zero) {
 			fmt.Printf("\t%s %glbs %goz\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
 		}
 	}
+}
+
+func formatFloat(f float64) string {
+	return fmt.Sprintf("%.2f", f)
 }
 
 func (q1 *Quantity) more(q2 Quantity) bool {
