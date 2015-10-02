@@ -47,14 +47,10 @@ func main() {
 	var recipeIndex RecipeIndex
 	json.Unmarshal(recipeFileContents, &recipeIndex)
 	
-
 	var purchase Purchase
 	json.Unmarshal(purchaseFileContents, &purchase)
 
-	leftOvers := map[string]Quantity{}
-	for key, val := range purchase.PurchaseList {
-		leftOvers[key] = val
-	}
+	leftOvers := copy(purchase.PurchaseList)
 
 	for _, recipeName := range purchase.RecipeList {
 		recipe, found := recipeIndex.Recipes[recipeName]
@@ -65,46 +61,69 @@ func main() {
 		leftOvers = minus(leftOvers, recipe.IngredientList)
 	}
 
-	// fmt.Println("Left Over")
-	// for key, value := range leftOvers {
-	// 	fmt.Printf("%s : \t\t%g lbs %g oz\n", key, value.Pounds, value.Ounces)
-	// }
-
 	extraRecipes := map[string]map[string]Quantity{}
-	var closestRecipe string
+	var smallestQuantiyRecipe, fewestAdditionalIngredientsRecipe  string
 	var smallestQuantity Quantity
+	fewestAdditionalIngredients := 10000000
 	smallestQuantity.Pounds = -10000000
+	var zero Quantity
 
 	for recipeName, recipe := range recipeIndex.Recipes {
 		extraRecipes[recipeName] = minus(leftOvers, recipe.IngredientList)
-		value := cumulativeNegativeAmount(extraRecipes[recipeName] )
+
+		fmt.Println(recipeName)
+		for ingredient, quantity := range extraRecipes[recipeName] {
+			if quantity.less(zero) {
+				fmt.Printf("\t%s %glbs %goz\n", ingredient, quantity.Pounds, quantity.Ounces)
+			}
+		}
+		fmt.Println()
+
+		which, value := cumulativeNegativeAmount(extraRecipes[recipeName] )
+
+		count := 0
+		for _, ingredient := range which {
+			_, found := purchase.PurchaseList[ingredient]
+			if !found {
+				count += 1
+			}
+		}
+
+		if count < fewestAdditionalIngredients {
+			fewestAdditionalIngredients = count
+			fewestAdditionalIngredientsRecipe = recipeName
+		}
 
 		if value.more(smallestQuantity) {
 			smallestQuantity = value
-			closestRecipe = recipeName
+			smallestQuantiyRecipe = recipeName
 		}
 	}
-
 
 	fmt.Print("Already making: ")
 	for _, r := range purchase.RecipeList {
-		fmt.Print(r + " ")
+		fmt.Print(r + ", ")
 	}
 	fmt.Println()
 
-	fmt.Println("Could make: " + closestRecipe)
-
-	var zero Quantity
+	fmt.Println("Could make (smallest additional weight): " + smallestQuantiyRecipe)
 
 	fmt.Println("Need more:")
-	for ingredient, quantity := range extraRecipes[closestRecipe] {
+	for ingredient, quantity := range extraRecipes[smallestQuantiyRecipe] {
 		if quantity.less(zero) {
-			quantity = quantity.negative()
-			fmt.Printf("\t%s %glbs %goz\n", ingredient, quantity.Pounds, quantity.Ounces)
+			fmt.Printf("\t%s %glbs %goz\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
+		}
+	}
+
+	fmt.Printf("\nOr Could make (fewest new ingredients: %d): %s\n", fewestAdditionalIngredients, fewestAdditionalIngredientsRecipe)
+
+	fmt.Println("Need more:")
+	for ingredient, quantity := range extraRecipes[fewestAdditionalIngredientsRecipe] {
+		if quantity.less(zero) {
+			fmt.Printf("\t%s %glbs %goz\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
 		}
 	}
 }
-
 
 func (q1 *Quantity) more(q2 Quantity) bool {
 	ounces1 := q1.Pounds * 16.0 + q1.Ounces
@@ -118,14 +137,16 @@ func (q1 *Quantity) less(q2 Quantity) bool {
 	return ounces1 < ounces2
 }
 
-func cumulativeNegativeAmount(m map[string]Quantity) Quantity {
+func cumulativeNegativeAmount(m map[string]Quantity) ([]string, Quantity) {
 	var total Quantity
-	for _, quantity := range m {
+	missingIngredients := []string{}
+	for ingredient, quantity := range m {
 		if quantity.Pounds < 0 || quantity.Ounces < 0 {
 			total = total.add(quantity)
+			missingIngredients = append(missingIngredients, ingredient)
 		}
 	}
-	return total
+	return missingIngredients, total
 }
 
 func copy(m map[string]Quantity) map[string]Quantity {
@@ -140,12 +161,13 @@ func minus(left map[string]Quantity, right map[string]Quantity) map[string]Quant
 	difference := copy(left)
 
 	for ingredient, quantity := range right {
+
 		leftOverQuantity, found := difference[ingredient]
 		if !found {
 			difference[ingredient] = quantity.negative()
-			continue
+		} else {
+			difference[ingredient] = leftOverQuantity.minus(quantity)
 		}
-		difference[ingredient] = leftOverQuantity.minus(quantity)
 	}
 
 	return difference
@@ -158,7 +180,7 @@ func (q1 *Quantity) minus(q2 Quantity) Quantity {
 	ounces2 := q2.Pounds * 16.0 + q2.Ounces
 	ounces3 := ounces1 - ounces2
 
-	q3.Pounds = math.Floor(ounces3 / 16)
+	q3.Pounds = float64(int64(ounces3 / 16))
 	q3.Ounces = math.Mod(ounces3, 16)
 
 	return q3
@@ -171,7 +193,7 @@ func (q1 *Quantity) add(q2 Quantity) Quantity {
 	ounces2 := q2.Pounds * 16.0 + q2.Ounces
 	ounces3 := ounces1 + ounces2
 
-	q3.Pounds = math.Floor(ounces3 / 16)
+	q3.Pounds = float64(int64(ounces3 / 16))
 	q3.Ounces = math.Mod(ounces3, 16)
 
 	return q3

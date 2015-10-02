@@ -1,13 +1,20 @@
 {
 	"PurchaseList" : {
-		"Marris Otter" : 	{ "Pounds" : 5.0, 	"Ounces" : 0.0 },
-		"Crystal 75" :  	{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
-		"Special B" :  		{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
-		"Black Patent" :  	{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
-		"Brown" :  			{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
-		"Northern Brewer" : { "Pounds" : 0.0, 	"Ounces" : 1.0 }
+		"2 Row" : 			{ "Pounds" : 10.0, 	"Ounces" : 0.0 },
+		"Oats" :  			{ "Pounds" : 2.0, 	"Ounces" : 0.0 },
+		"Chocolate" :  		{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Crystal 10" :  	{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Black Patent" :  	{ "Pounds" : 2.0, 	"Ounces" : 0.0 },
+		"Carapils" : 		{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Cacao Nibs" : 		{ "Pounds" : 0.0, 	"Ounces" : 4.0 },
+		"Willamette" : 		{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Roasted Barley" : 	{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Abbey" : 			{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Cystal 40" : 		{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Special B" : 		{ "Pounds" : 1.0, 	"Ounces" : 0.0 },
+		"Northern Brewer" : { "Pounds" : 0.0, 	"Ounces" : 2.0 }
 	},
 	"RecipeList" : [
-		"Old Ale"
+		"Stone Chocolate Stout", "Stone Chocolate Stout", "Stone Chocolate Stout"
 	]
 }
