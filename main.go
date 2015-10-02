@@ -130,7 +130,7 @@ func main() {
 	fmt.Println("\nOr Could make (additional weight not brewing already): " + recipes["smallestQuantiyRecipeNotBrewing"])
 	printNeeds(extraRecipes[recipes["smallestQuantiyRecipeNotBrewing"]])
 
-	fmt.Printf("\nOr Could make (fewest new ingredients not brewing already: %d): %s\n", fewestAdditionalIngredients, recipes["fewestAdditionalIngredientsRecipeNotBrewing"])
+	fmt.Printf("\nOr Could make (fewest new ingredients not brewing already: %d): %s\n", fewestAdditionalIngredientsNowBrewing, recipes["fewestAdditionalIngredientsRecipeNotBrewing"])
 	printNeeds(extraRecipes[recipes["fewestAdditionalIngredientsRecipeNotBrewing"]])
 }
 
