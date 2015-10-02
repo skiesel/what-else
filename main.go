@@ -78,7 +78,7 @@ func main() {
 	removeThese := []string{}
 	for ingredient, quantity := range leftOvers {
 		if quantity.less(zero) {
-			fmt.Printf("Not enough %s for planned recipes (missing %glbs %goz)\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
+			fmt.Printf("Not enough %s for planned recipes (missing %.2glbs %.2goz)\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
 			removeThese = append(removeThese, ingredient)
 		}
 	}
@@ -154,13 +154,9 @@ func printNeeds(list map[string]Quantity) {
 	fmt.Println("Need more:")
 	for ingredient, quantity := range list {
 		if quantity.less(zero) {
-			fmt.Printf("\t%s %glbs %goz\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
+			fmt.Printf("\t%s %.2glbs %.2goz\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
 		}
 	}
-}
-
-func formatFloat(f float64) string {
-	return fmt.Sprintf("%.2f", f)
 }
 
 func (q1 *Quantity) more(q2 Quantity) bool {
