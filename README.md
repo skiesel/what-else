@@ -28,7 +28,7 @@ Need more:
 	2 Row 1lbs 1.1999999999999886oz
 	Caravienne 0lbs 1.5oz
 
-Or Could make (fewest new ingredients not brewing already: 0): Wee Heavy
+Or Could make (fewest new ingredients not brewing already: 1): Wee Heavy
 Need more:
 	Crystal 75 0lbs 3oz
 	2 Row 2lbs 1.1999999999999886oz
