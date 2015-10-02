@@ -119,7 +119,7 @@ func main() {
 	for _, r := range purchase.RecipeList {
 		fmt.Print(r + ", ")
 	}
-	fmt.Println()
+	fmt.Println("\n")
 
 	fmt.Println("Could make (smallest additional weight): " + recipes["smallestQuantiyRecipe"])
 	printNeeds(extraRecipes[recipes["smallestQuantiyRecipe"]])
