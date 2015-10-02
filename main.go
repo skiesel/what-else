@@ -50,6 +50,12 @@ func main() {
 	var purchase Purchase
 	json.Unmarshal(purchaseFileContents, &purchase)
 
+	brewingLookup := map[string]string{}
+
+	for _, recipeName := range purchase.RecipeList {
+		brewingLookup[recipeName] = recipeName
+	}
+
 	leftOvers := copy(purchase.PurchaseList)
 
 	for _, recipeName := range purchase.RecipeList {
@@ -62,22 +68,16 @@ func main() {
 	}
 
 	extraRecipes := map[string]map[string]Quantity{}
-	var smallestQuantiyRecipe, fewestAdditionalIngredientsRecipe  string
-	var smallestQuantity Quantity
-	fewestAdditionalIngredients := 10000000
+	recipes := map[string]string{}
+
+	var smallestQuantity, smallestQuantityNotBrewing Quantity
 	smallestQuantity.Pounds = -10000000
-	var zero Quantity
+	smallestQuantityNotBrewing.Pounds = -10000000
+	fewestAdditionalIngredients := 10000000
+	fewestAdditionalIngredientsNowBrewing := 10000000
 
 	for recipeName, recipe := range recipeIndex.Recipes {
 		extraRecipes[recipeName] = minus(leftOvers, recipe.IngredientList)
-
-		fmt.Println(recipeName)
-		for ingredient, quantity := range extraRecipes[recipeName] {
-			if quantity.less(zero) {
-				fmt.Printf("\t%s %glbs %goz\n", ingredient, quantity.Pounds, quantity.Ounces)
-			}
-		}
-		fmt.Println()
 
 		which, value := cumulativeNegativeAmount(extraRecipes[recipeName] )
 
@@ -91,13 +91,28 @@ func main() {
 
 		if count < fewestAdditionalIngredients {
 			fewestAdditionalIngredients = count
-			fewestAdditionalIngredientsRecipe = recipeName
+			recipes["fewestAdditionalIngredientsRecipe"] = recipeName
 		}
 
 		if value.more(smallestQuantity) {
 			smallestQuantity = value
-			smallestQuantiyRecipe = recipeName
+			recipes["smallestQuantiyRecipe"] = recipeName
 		}
+
+
+		_, found := brewingLookup[recipeName]
+		if !found {
+			if count < fewestAdditionalIngredientsNowBrewing {
+				fewestAdditionalIngredientsNowBrewing = count
+				recipes["fewestAdditionalIngredientsRecipeNotBrewing"] = recipeName
+			}
+
+			if value.more(smallestQuantityNotBrewing) {
+				smallestQuantityNotBrewing = value
+				recipes["smallestQuantiyRecipeNotBrewing"] = recipeName
+			}
+		}
+
 	}
 
 	fmt.Print("Already making: ")
@@ -106,19 +121,23 @@ func main() {
 	}
 	fmt.Println()
 
-	fmt.Println("Could make (smallest additional weight): " + smallestQuantiyRecipe)
+	fmt.Println("Could make (smallest additional weight): " + recipes["smallestQuantiyRecipe"])
+	printNeeds(extraRecipes[recipes["smallestQuantiyRecipe"]])
 
+	fmt.Printf("\nOr Could make (fewest new ingredients: %d): %s\n", fewestAdditionalIngredients, recipes["fewestAdditionalIngredientsRecipe"])
+	printNeeds(extraRecipes[recipes["fewestAdditionalIngredientsRecipe"]])
+
+	fmt.Println("\nOr Could make (additional weight not brewing already): " + recipes["smallestQuantiyRecipeNotBrewing"])
+	printNeeds(extraRecipes[recipes["smallestQuantiyRecipeNotBrewing"]])
+
+	fmt.Printf("\nOr Could make (fewest new ingredients not brewing already: %d): %s\n", fewestAdditionalIngredients, recipes["fewestAdditionalIngredientsRecipeNotBrewing"])
+	printNeeds(extraRecipes[recipes["fewestAdditionalIngredientsRecipeNotBrewing"]])
+}
+
+func printNeeds(list map[string]Quantity) {
+	var zero Quantity
 	fmt.Println("Need more:")
-	for ingredient, quantity := range extraRecipes[smallestQuantiyRecipe] {
-		if quantity.less(zero) {
-			fmt.Printf("\t%s %glbs %goz\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
-		}
-	}
-
-	fmt.Printf("\nOr Could make (fewest new ingredients: %d): %s\n", fewestAdditionalIngredients, fewestAdditionalIngredientsRecipe)
-
-	fmt.Println("Need more:")
-	for ingredient, quantity := range extraRecipes[fewestAdditionalIngredientsRecipe] {
+	for ingredient, quantity := range list {
 		if quantity.less(zero) {
 			fmt.Printf("\t%s %glbs %goz\n", ingredient, math.Abs(quantity.Pounds), math.Abs(quantity.Ounces))
 		}
